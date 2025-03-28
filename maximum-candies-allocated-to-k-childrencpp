@@ -1,0 +1,35 @@
+class Solution {
+public:
+int solve(int candies,vector<int>&c,long long k)
+{
+    long long student =0;
+    for(int i=0;i<c.size();i++)
+    {
+        student += c[i] / candies;
+    }
+
+    return student >= k;
+}
+    int maximumCandies(vector<int>& c, long long k) {
+    int n = c.size();
+    int low= 1,high = c[0];
+    for(auto it:c)
+    high = max(high,it);
+    
+    int ans=0;
+    while(low<=high)
+    {
+        int mid = (low+high)/2;
+        if(solve(mid,c,k))
+        {
+            ans= mid;
+            low = mid+1;
+        }
+        else
+        high = mid-1;
+    }
+    return ans;
+
+
+    }
+};
