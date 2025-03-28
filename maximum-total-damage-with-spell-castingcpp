@@ -1,0 +1,41 @@
+#define ll long long
+ll Max(ll a,ll b)
+{
+    if(a>b) return a;
+    return b;
+}
+class Solution {
+public:
+    long long maximumTotalDamage(vector<int>& power) {
+    int n = power.size();
+    map<ll,ll>mp;
+    for(auto it:power)
+    mp[it]++;
+
+    unordered_map<ll,ll>dp;
+    ll ans= 0;
+    ll prev_ele =0;
+    for(auto it:mp)
+    {
+        ll ele = it.first,freq = it.second;
+        ll back_ele = 0;
+        auto back_ptr = mp.lower_bound(ele-2);
+        if(back_ptr!=mp.begin())
+        back_ele =  (*(--back_ptr)).first;
+
+       
+         dp[ele] = Max(dp[prev_ele], ele*freq  + dp[back_ele]);
+        ans = max(ans,dp[ele]);
+        prev_ele = ele;
+    }
+
+    return ans;
+
+
+
+
+
+
+
+    }
+};
