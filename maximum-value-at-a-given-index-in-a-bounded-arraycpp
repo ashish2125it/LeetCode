@@ -1,0 +1,40 @@
+#define ll long long int
+
+class Solution {
+public:
+    bool solve(ll val, int n, int index, int maxSum) {
+        ll sum = val;
+
+        // Left Side Contribution
+        ll leftCount = index;
+        if (val > leftCount) {
+            sum += (val - 1) * val / 2 - (val - 1 - leftCount) * (val - leftCount) / 2;
+        } else {
+            sum += (val - 1) * val / 2 + (leftCount - (val - 1));
+        }
+
+        // Right Side Contribution
+        ll rightCount = n - index - 1;
+        if (val > rightCount) {
+            sum += (val - 1) * val / 2 - (val - 1 - rightCount) * (val - rightCount) / 2;
+        } else {
+            sum += (val - 1) * val / 2 + (rightCount - (val - 1));
+        }
+
+        return sum <= maxSum;
+    }
+
+    int maxValue(int n, int index, int maxSum) {
+        ll low = 1, high = maxSum, ans = 0;
+        while (low <= high) {
+            ll mid = (low + high) / 2;
+            if (solve(mid, n, index, maxSum)) {
+                ans = mid;
+                low = mid + 1;
+            } else {
+                high = mid - 1;
+            }
+        }
+        return ans;
+    }
+};
