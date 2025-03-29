@@ -1,0 +1,41 @@
+class Solution {
+public:
+    int maxProfitAssignment(vector<int>& diff, vector<int>& profit, vector<int>& worker) {
+    int n = diff.size(),m = worker.size();
+    vector<pair<int,int>>v;
+    for(int i=0;i<n;i++)
+    v.push_back({diff[i],profit[i]});
+
+    sort(v.begin(),v.end());
+    vector<int>max_profit(n,0);
+    max_profit[0] = v[0].second;
+
+    for(int i=1;i<n;i++)
+    max_profit[i] = max(max_profit[i-1],v[i].second);
+
+    int ans=0 ;
+
+    for(int i=0;i<m;i++)
+    {
+        int low = 0,high = n-1;
+        int curr_profit =0;
+        while(low<=high)
+        {
+            int mid = (low+high)/2;
+            if(v[mid].first<=worker[i])
+            {
+                curr_profit = max(curr_profit,max_profit[mid]);
+                low = mid+1;
+            }
+            else
+            high = mid-1;
+        } 
+
+        ans += (curr_profit);
+    }
+    
+
+    return ans;
+
+    }
+};
