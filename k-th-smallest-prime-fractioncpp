@@ -1,0 +1,31 @@
+
+class Solution {
+public:
+    vector<int> kthSmallestPrimeFraction(vector<int>& arr, int k) {
+        int n = arr.size();
+        
+        // Min-heap (priority queue) storing {fraction, row, col}
+        priority_queue<vector<double>, vector<vector<double>>, greater<vector<double>>> pq;
+
+        // Initialize the priority queue with fractions of the form arr[i] / arr[n-1]
+        for (int i = 0; i < min(n - 1, k); i++) {
+            pq.push({(double)arr[i] / arr[n - 1], (double)i, (double)(n - 1)});
+        }
+
+        while (--k > 0) {  // Extract k-1 smallest elements
+            auto it = pq.top();
+            pq.pop();
+            
+            int row = (int)it[1];
+            int col = (int)it[2];
+
+            if (col - 1 > row) { 
+                pq.push({(double)arr[row] / arr[col - 1], (double)row, (double)(col - 1)});
+            }
+        }
+
+        int row = (int)pq.top()[1];  
+        int col = (int)pq.top()[2];  
+        return {arr[row], arr[col]};  
+    }
+};
