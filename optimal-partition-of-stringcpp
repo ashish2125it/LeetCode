@@ -1,0 +1,21 @@
+class Solution {
+public:
+   
+     
+    int partitionString(string s) {
+    int n = s.length();
+    
+     unordered_map<char, int> mp;
+        int cnt = 1; 
+        
+        for (char c : s) {
+            if (mp.find(c) != mp.end()) { 
+                cnt++;
+                mp.clear(); 
+            }
+            mp[c]++; 
+        }
+        
+        return cnt;
+    }
+};
