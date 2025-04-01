@@ -1,0 +1,18 @@
+class Solution {
+public:
+long long solve(int i,vector<vector<int>>& questions,int n,vector<long long>&dp)
+{
+   if(i>=n) return 0;
+   if(dp[i]!=-1) return dp[i];
+
+    long long Solved = questions[i][0] + solve(i+questions[i][1] +1,questions,n,dp);
+    long long skip = solve(i+1,questions,n,dp);
+    return  dp[i] = max(Solved,skip);
+}
+    long long mostPoints(vector<vector<int>>& questions) {
+        int n=questions.size();
+        vector<long long>dp(n+1,-1);
+        long long ans= solve(0,questions,n,dp);
+        return ans;
+    }
+};
