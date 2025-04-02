@@ -1,0 +1,54 @@
+class Solution {
+public:
+    void solve(vector<int>& prime) {
+        vector<int> p(1001, 1);
+        p[0] = p[1] = 0;
+        
+        for (int i = 2; i <= 1000; i++) {
+            if (p[i] == 1) {
+                for (int j = i * i; j <= 1000; j += i) {
+                    p[j] = 0;
+                }
+            }
+        }
+
+        for (int i = 2; i <= 1000; i++) {
+            if (p[i] == 1) prime.push_back(i);
+        }
+    }
+
+    bool primeSubOperation(vector<int>& nums) {
+        int n = nums.size();
+        vector<int> prime;
+        solve(prime);
+
+        for (int i = n - 2; i >= 0; i--) {
+            if (nums[i] < nums[i + 1]) continue;
+
+            int target_diff = nums[i] - nums[i + 1];
+            int best_prime = -1;
+
+            // Find the smallest prime > target_diff that's also < nums[i]
+            for (int p : prime) {
+                if (p > target_diff && p < nums[i]) {
+                    best_prime = p;
+                    break;
+                }
+            }
+
+            if (best_prime == -1) return false; // No suitable prime found
+            nums[i] -= best_prime;
+
+            // // After subtraction, ensure it's still positive and less than next
+            // if (nums[i] <= 0 ) {
+            //     return false;
+            // }
+        }
+
+        // Final check
+        for (int i = 0; i < n - 1; i++) {
+            if (nums[i] >= nums[i + 1]) return false;
+        }
+        return true;
+    }
+};
