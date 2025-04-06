@@ -1,0 +1,40 @@
+#define ll long long int
+class Solution {
+public:
+    ll solve(int i,int n,vector<int>&nums,ll sum,int limit,int k,bool plus)
+    {
+        if(i>=n) 
+            return sum==k;
+        
+        
+        ll take=0;
+        if(plus)
+         take = nums[i]*solve(i+1,n,nums,sum + nums[i],limit,k,false);
+        else
+         take = nums[i]*solve(i+1,n,nums,sum - nums[i],limit,k,true);   
+        
+        ll not_take=  solve(i+1,n,nums,sum,limit,k,plus);
+        
+        ll maxi = max(take,not_take);
+        ll mini = min(take,not_take);
+        if(maxi<=limit)
+            return maxi;
+        if(mini<=limit)
+            return mini;
+        
+        return 0;
+        
+    }
+    int maxProduct(vector<int>& nums, int k, int limit) {
+    int n = nums.size();
+    if(n==1)
+    {
+        if(nums[0]==k && nums[0]<=limit) return nums[0];
+        return -1;
+    }
+    ll ans = solve(0,n,nums,0,limit,k,true);
+    if(ans==0)
+        return -1;
+        return ans;
+    }
+};
