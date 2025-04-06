@@ -1,0 +1,78 @@
+class Solution {
+    void solve(string &s, int i, int j, int &ans) {
+        while(i >= 0 && j < s.length() && s[i] == s[j]) {
+            ans = max(ans, j - i + 1);
+            i--;
+            j++;
+        }
+    }
+
+public:
+    int longestPalindrome(string s, string t) {
+        int n = s.length(), m = t.length();
+        unordered_set<string> st;
+       //  unordered_set<string> st2;
+        
+        int ans = 0;
+
+        for(int i = 0; i < m; i++) {
+            string temp = "";
+            for(int j = i; j < m; j++) {
+                temp += t[j];
+                string rev = temp;
+                reverse(rev.begin(), rev.end());
+                st.insert(rev);
+            }
+        }
+        
+       
+       
+        for(int i = 0; i < n; i++) {
+            string temp = "";
+            for(int j = i; j < n; j++) {
+                temp += s[j];
+                if(st.find(temp) != st.end()) {
+                    if(j + 1 < n)
+                        ans = max(ans, (int)(2 * temp.length() + 1));
+                    else
+                        ans = max(ans, (int)(2 * temp.length()));
+                }
+            }
+        }
+        
+      /////  cout<<"ans is "<<ans<<endl;
+        
+        // for(int i = 0; i < m; i++) {
+        //     string temp = "";
+        //     for(int j = i; j < m; j++) {
+        //         temp += t[j];
+        //         if(st2.find(temp) != st2.end()) {
+        //             if(j + 1 < m)
+        //                 ans = max(ans, (int)(2 * temp.length() + 1));
+        //             else
+        //                 ans = max(ans, (int)(2 * temp.length()));
+        //         }
+        //     }
+        // }
+        
+       // cout<<"ans is "<<ans<<endl;
+
+        for(int i = 0; i < n; i++) {
+            solve(s, i, i, ans);
+            if(i + 1 < n)
+                solve(s, i, i + 1, ans);
+        }
+
+     //   cout<<"ans is "<<ans<<endl;
+        
+        for(int i = 0; i < m; i++) {
+            solve(t, i, i, ans);
+            if(i + 1 < m)
+                solve(t, i, i + 1, ans);
+        }
+
+        return ans;
+    }
+    
+    // nln
+};  
