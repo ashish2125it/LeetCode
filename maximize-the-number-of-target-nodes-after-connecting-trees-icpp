@@ -1,0 +1,61 @@
+class Solution {
+public:
+    // BFS function to count nodes within distance k
+    int countNodesWithinK(int start, unordered_map<int, vector<int>>& adj, int k) {
+        int count = 0;
+        vector<int> visited(adj.size(), 0);
+        queue<int> q;
+        q.push(start);
+        visited[start] = 1;
+        int distance = 0;
+
+        while (!q.empty() && distance <= k) {
+            int size = q.size();
+            for (int i = 0; i < size; i++) {
+                int node = q.front(); q.pop();
+                count++;
+
+                for (int neighbor : adj[node]) {
+                    if (!visited[neighbor]) {
+                        visited[neighbor] = 1;
+                        q.push(neighbor);
+                    }
+                }
+            }
+            distance++;
+        }
+        return count;
+    }
+
+    vector<int> maxTargetNodes(vector<vector<int>>& edges1, vector<vector<int>>& edges2, int k) {
+        int n = edges1.size() + 1;  // nodes in tree1
+        int m = edges2.size() + 1;  // nodes in tree2
+
+        // Build adjacency lists for both trees
+        unordered_map<int, vector<int>> tree1, tree2;
+        for (auto& edge : edges1) {
+            tree1[edge[0]].push_back(edge[1]);
+            tree1[edge[1]].push_back(edge[0]);
+        }
+        for (auto& edge : edges2) {
+            tree2[edge[0]].push_back(edge[1]);
+            tree2[edge[1]].push_back(edge[0]);
+        }
+
+        // Precompute max reachable nodes in tree2 within (k-1) distance
+        int max_tree2_nodes = 0;
+        for (int i = 0; i < m; ++i) {
+            int count = countNodesWithinK(i, tree2, k - 1);
+            max_tree2_nodes = max(max_tree2_nodes, count);
+        }
+
+        // For each node in tree1, compute reachable nodes within distance k
+        vector<int> answer(n, 0);
+        for (int i = 0; i < n; ++i) {
+            int count_tree1 = countNodesWithinK(i, tree1, k);
+            answer[i] = count_tree1 + max_tree2_nodes;
+        }
+
+        return answer;
+    }
+};
