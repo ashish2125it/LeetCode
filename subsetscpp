@@ -1,0 +1,27 @@
+class Solution {
+public:
+void solve(int index,int n,vector<int>&nums,vector<int>&store,vector<vector<int>>&ans)
+{
+      if(index>=n)
+      {
+        ans.push_back(store);
+        return ;
+      }
+
+
+      // take it
+      store.push_back(nums[index]);
+      solve(index+1,n,nums,store,ans);
+      store.pop_back();
+      solve(index+1,n,nums,store,ans);
+      
+
+}
+    vector<vector<int>> subsets(vector<int>& nums) {
+    vector<vector<int>>ans;
+    int n = nums.size();
+    vector<int>store;
+    solve(0,n,nums,store,ans);
+    return ans;
+    }
+};
