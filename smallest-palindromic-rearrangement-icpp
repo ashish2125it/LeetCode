@@ -1,0 +1,55 @@
+class Solution {
+public:
+    string smallestPalindrome(string s) {
+    int n = s.length();
+    if(s.length()==1) 
+    return s;
+    string ans= "";
+    char odd = '0';
+    vector<int>freq(26,0);
+
+    for(int i=0;i<n;i++) freq[s[i]-'a']++;
+
+
+    for(int i=0;i<26;i++)
+    {
+        int f = freq[i];
+        if(f%2==1)
+        {
+        int cnt = f/2;
+        while(cnt)
+        {
+            ans += char(i+'a');
+            cnt--;
+        } 
+            odd = char(i+'a');
+        }
+        else
+        {
+        int cnt = f/2;
+        while(cnt)
+        {
+            ans += char(i+'a');
+            cnt--;
+        } 
+        }
+    }
+
+   if(s.length()%2==0)
+   {
+       string final_ans = ans;
+     reverse(ans.begin(),ans.end());
+     final_ans += ans;
+     return final_ans;
+   }
+   else
+   {
+          string final_ans = ans;
+           final_ans += odd;
+        reverse(ans.begin(),ans.end());
+        final_ans += ans;
+        return final_ans;
+   }
+    return "";
+    }
+};
