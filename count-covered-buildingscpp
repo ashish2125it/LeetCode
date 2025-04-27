@@ -1,0 +1,50 @@
+#include <bits/stdc++.h>
+using namespace std;
+
+class Solution {
+public:
+    bool hasLower(int val, vector<int>& nums) {
+       
+        auto it = lower_bound(nums.begin(), nums.end(), val);
+        return it != nums.begin();
+    }
+    
+
+    bool hasUpper(int val, vector<int>& nums) {
+       
+        auto it = upper_bound(nums.begin(), nums.end(), val);
+        return it != nums.end();
+    }
+
+    int countCoveredBuildings(int n, vector<vector<int>>& b) {
+        int size = b.size();
+        unordered_map<int, vector<int>> x, y;
+
+        for (int i = 0; i < size; i++) {
+            x[b[i][0]].push_back(b[i][1]);
+            y[b[i][1]].push_back(b[i][0]);
+        }
+
+       
+        for (auto& p : x) {
+            sort(p.second.begin(), p.second.end());
+        }
+        for (auto& p : y) {
+            sort(p.second.begin(), p.second.end());
+        }
+
+        int ans = 0;
+
+        for (int i = 0; i < size; i++) {
+            vector<int>& temp1 = x[b[i][0]]; 
+            vector<int>& temp2 = y[b[i][1]]; 
+
+            if (hasLower(b[i][1], temp1) && hasUpper(b[i][1], temp1) &&
+                hasLower(b[i][0], temp2) && hasUpper(b[i][0], temp2)) {
+                ans++;
+            }
+        }
+
+        return ans;
+    }
+};
