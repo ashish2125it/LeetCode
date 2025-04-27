@@ -1,0 +1,44 @@
+class Solution {
+public:
+    string findCommonResponse(vector<vector<string>>& res) {
+    int n = res.size();
+    unordered_map<string,int>mp;
+    for(int i=0;i<n;i++)
+    {
+        int m = res[i].size();
+        set<string>st;
+        for(int j=0;j<m;j++)
+        {
+            if(st.find(res[i][j])==st.end())
+            {
+                mp[res[i][j]]++;
+                st.insert(res[i][j]);
+            }
+        }
+    }
+
+    int max_f = 0;
+    string ans = "";
+    for(auto it:mp)
+  {  
+    if(it.second>max_f)
+    {
+    max_f = max(max_f,it.second);
+    ans = it.first;
+    }
+  }
+
+
+    int len = INT_MAX;
+    for(auto it:mp)
+    {
+        if(max_f==it.second)
+        {
+           ans=  min(ans,it.first);
+        }
+    }
+
+    return ans;
+    
+    }
+};
