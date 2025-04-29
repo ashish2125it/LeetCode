@@ -1,0 +1,31 @@
+#define ll long long
+class Solution {
+public:
+    long long countSubarrays(vector<int>& nums, int k) {
+    ll n = nums.size();
+    int maxi = nums[0];
+    for(auto it:nums)
+    maxi = max(maxi,it);
+
+    int i=0,j=0,cnt=0;
+    ll ans=0;
+    while(j<n)
+    {
+       if(nums[j]==maxi)
+       cnt++;
+
+       while(cnt>=k && i<=j)
+       {
+        ans += (n-j);
+        if(nums[i]==maxi)
+        cnt--;
+        i++;
+       }
+       
+       j++;
+    }
+
+    return ans;
+
+    }
+};
