@@ -1,0 +1,28 @@
+#define ll long long
+class Solution {
+public:
+    long long zeroFilledSubarray(vector<int>& nums) {
+    int n = nums.size();
+    ll ans=0;
+    int i=0,j=0;
+    while(j<n)
+    {
+        if(nums[j]!=0)
+        i = j;
+        while(i<j && nums[i]!=0)
+        i++;
+
+        if(nums[j]==0)
+        {
+            if(nums[i]==0)
+            ans += (j-i+1);
+        }
+       
+
+        j++;
+    }
+
+    return ans;
+     
+    }
+};
