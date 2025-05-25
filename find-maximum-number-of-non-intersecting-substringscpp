@@ -1,0 +1,47 @@
+class Solution {
+public:
+    int maxSubstrings(string word) {
+    int n = word.length();
+    map<int,vector<int>>mp;
+
+    for(int i=0;i<n;i++)
+    mp[word[i]-'a'].push_back(i);
+
+    vector<pair<int,int>>intervals;
+
+    for(auto it:mp)
+    {
+        vector<int>temp = it.second;
+        for(int i=0;i<temp.size();i++)
+        {
+            int left = temp[i];
+            int need = left + 3;
+            auto right = lower_bound(temp.begin(),temp.end(),need);
+            if(right!=temp.end())
+            {
+                intervals.push_back({left,*right});
+            }
+        }
+    }
+
+    sort(intervals.begin(),intervals.end(),
+    []( auto& a,auto& b) { return a.second < b.second ;});
+
+    int ans=0;
+
+    int last_end= -1;
+
+    for(int i=0;i<intervals.size();i++)
+    {
+        if(intervals[i].first > last_end)
+        {
+            last_end = max(last_end,intervals[i].second);
+            ans++;
+        }
+    }
+
+   return ans;
+
+    
+    }
+};
