@@ -1,0 +1,34 @@
+class Solution {
+public:
+    string resultingString(string s) {
+    int n = s.length();
+    stack<char>st;
+    for(int i=0;i<n;i++)
+    {
+        if(!st.empty())
+        {
+            
+           if( char(st.top()-1)== s[i] || char(st.top()+1) == s[i] || (s[i]=='a' && st.top()=='z' ) || s[i]=='z' && st.top()=='a' ) 
+           {
+                st.pop();
+           }
+           else
+           st.push(s[i]);
+        }
+        else
+        {
+           st.push(s[i]);
+        }
+    }
+    
+    string ans = "";
+    while(!st.empty())
+    {
+         ans += st.top();
+         st.pop();
+    }
+
+    reverse(ans.begin(),ans.end());
+    return ans;
+    }
+};
