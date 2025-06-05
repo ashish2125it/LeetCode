@@ -1,0 +1,53 @@
+class Solution {
+public:
+    int maxProfit(vector<int>& nums) {
+    int n = nums.size();
+
+     int max_profit = 0;
+
+    // for(int i=0;i<n;i++)
+    // {
+    //     int buying_price = nums[i];
+    //     int max_selling_price = 0;
+    //     for(int j=i+1;j<n;j++)
+    //     {
+    //        max_selling_price = max(max_selling_price, nums[j]);
+    //     }
+
+    //     int curr_profit = max(0,max_selling_price- buying_price);
+
+    //     max_profit = max(max_profit, curr_profit);
+
+    // }
+
+    // return max_profit;
+
+
+
+    vector<int>max_selling_price(n);
+    max_selling_price[n-1] = nums[n-1];
+
+    for(int i=n-2;i>=0;i--)
+    {
+        int curr_selling_price = nums[i] ;
+        max_selling_price[i] = max(max_selling_price[i+1],curr_selling_price);
+    }
+
+    //  [7,1,5,3,6,4] 
+    //  [7 6 6 6 6 4]
+
+    for(int i=0;i<n-1;i++)
+    {
+          int buying_price = nums[i];
+          int selling_price = max_selling_price[i+1] ;
+
+          int current_profit = max(0, selling_price- buying_price);
+
+          max_profit = max(max_profit,current_profit);
+    }
+
+    return max_profit;
+
+ 
+    }
+};
