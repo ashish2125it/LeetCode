@@ -1,0 +1,38 @@
+class Solution {
+public:
+    bool isAnagram(string s, string t) {
+    int n1 = s.length();
+    int n2 = t.length();
+
+    if(n1!=n2) return false;
+
+    map<char,int>freq1 ;
+    map<char,int>freq2 ;
+
+    for(int i=0;i<n1;i++)
+    freq1[s[i]]++;
+
+      for(int i=0;i<n2;i++)
+    freq2[t[i]]++;
+
+
+    for(auto it:freq1)
+    {
+        char c = it.first;
+        int freq = it.second;
+
+        if(freq2.find(c)!=freq2.end())
+        {
+            int f= freq2[c];
+            if(f!=freq) return false;
+        }
+        else
+        return false;
+    }
+
+    return true;
+
+
+       
+    }
+};
