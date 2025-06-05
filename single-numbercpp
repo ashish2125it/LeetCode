@@ -1,0 +1,28 @@
+class Solution {
+public:
+    int singleNumber(vector<int>& nums) {
+    int n = nums.size();
+
+    for(int i=0;i<n;i++)
+    {
+        int element = nums[i];
+        int check = 0;
+        for(int j=0;j<n;j++)
+        {
+            if(j!=i && element==nums[j])
+            {
+               
+                check = 1;
+                break; 
+            }
+        }
+
+        /// 
+        if(check==0)
+        return element;
+    }
+    
+    return -1;
+        
+    }
+};
