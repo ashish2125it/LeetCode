@@ -1,0 +1,44 @@
+class Solution {
+bool dfs(int node,vector<vector<vector<int>>>&adj,vector<int>&vis,int& ans,int n)
+{
+    if(vis[node]==1) return false;
+    if(node==n) return true;
+
+    vis[node] =  1;
+    for(auto it:adj[node])
+    {
+        if(dfs(it[0],adj,vis,ans,n))
+        {
+            ans = min(ans,it[1]);
+            
+        }
+    }
+    vis[node] = 0;
+
+    return true;
+   
+}
+
+public:
+    int minScore(int n, vector<vector<int>>& roads) {
+    int m = roads.size();
+    vector<vector<vector<int>>>adj(n+1);
+    for(int i=0;i<m;i++)
+    {
+        int a = roads[i][0];
+        int b = roads[i][1];
+        int dist = roads[i][2];
+        adj[a].push_back({b,dist});
+        adj[b].push_back({a,dist});
+    }  
+
+     
+     int ans = INT_MAX;
+    vector<int>vis(n+1,0);
+
+    bool check = dfs(1,adj,vis,ans,n);
+     return ans;
+
+
+    }
+};
