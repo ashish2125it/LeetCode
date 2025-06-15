@@ -1,0 +1,45 @@
+class Solution {
+public:
+    vector<int> shortestDistanceAfterQueries(int n, vector<vector<int>>& q) {
+     
+      int m =   q.size();
+      vector<int> ans(m);
+      unordered_map<int,vector<int>>gr;
+      for(int i=0;i<n-1;i++) 
+      gr[i].push_back(i+1);
+
+      for(int i=0;i<m;i++)
+      {
+         vector<int>dist(n,INT_MAX);
+         dist[0] = 0 ;
+         gr[q[i][0]].push_back(q[i][1]);
+         priority_queue<pair<int,int>,vector<pair<int,int>>,greater<pair<int,int>>>pq;
+         pq.push({0,0});  // {distance,Node}
+
+         while(!pq.empty())
+         {
+            auto it  = pq.top();
+            int distance = it.first;
+            int Node = it.second;
+            pq.pop();
+
+            if(dist[Node]<distance) continue;
+
+            for(auto adj_node:gr[Node])
+            {
+                if( distance + 1 < dist[adj_node])
+                {
+                    pq.push({1 + distance,adj_node}) ;
+                    dist[adj_node] = 1 + distance ;
+                }
+            }
+
+         }
+         ans[i] = dist[n-1];
+      }
+
+      return ans;
+
+
+    }
+};
