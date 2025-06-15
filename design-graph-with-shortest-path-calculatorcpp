@@ -1,0 +1,50 @@
+#define ll long long
+class Graph {
+public:
+    unordered_map<int, vector<pair<int, ll>>> graph;
+    int size;
+
+    Graph(int n, vector<vector<int>>& edges) {
+        size = n;
+        for (int i = 0; i < edges.size(); i++) {
+            int u = edges[i][0];
+            int v = edges[i][1];
+            ll cost = edges[i][2];
+            graph[u].push_back({v, cost});
+        }
+    }
+
+    void addEdge(vector<int> edge) {
+        int u = edge[0];
+        int v = edge[1];
+        ll cost = edge[2];
+        graph[u].push_back({v, cost});
+    }
+
+    int shortestPath(int node1, int node2) {
+        priority_queue<pair<ll, int>, vector<pair<ll, int>>, greater<pair<ll, int>>> pq;
+
+        vector<ll> dist(size, 1e18);  // Use 1e18 for safety with long long
+        dist[node1] = 0;
+        pq.push({0, node1}); // {cost, node}
+
+        while (!pq.empty()) {
+            auto [cost, node] = pq.top();
+            pq.pop();
+
+            if (cost > dist[node]) continue; // Skip if not optimal anymore
+
+            for (auto it : graph[node]) {
+                int next_node = it.first;
+                ll edge_cost = it.second;
+
+                if (dist[next_node] > cost + edge_cost) {
+                    dist[next_node] = cost + edge_cost;
+                    pq.push({dist[next_node], next_node});
+                }
+            }
+        }
+
+        return (dist[node2] == 1e18) ? -1 : dist[node2];
+    }
+};
