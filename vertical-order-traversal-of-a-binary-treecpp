@@ -1,0 +1,46 @@
+class Solution {
+public:
+    vector<vector<int>> verticalTraversal(TreeNode* root) {
+        vector<vector<int>> ans;
+        if (root == NULL)
+            return ans;
+
+        // map<HD, map<level, multiset<int>>> to automatically sort values at same HD and level
+        map<int, map<int, multiset<int>>> nodes;
+        queue<pair<TreeNode*, pair<int, int>>> q;
+        q.push({root, {0, 0}});
+
+        while (!q.empty()) {
+            
+            int size = q.size();
+            for(int i=0;i<size;i++)
+            {
+            auto front = q.front();
+            q.pop();
+            TreeNode* node = front.first;
+            int hd = front.second.first;
+            int level = front.second.second;
+
+            nodes[hd][level].insert(node->val);
+
+            if (node->left) 
+                q.push({node->left, {hd - 1, level + 1}});
+            if (node->right) 
+                q.push({node->right, {hd + 1, level + 1}});
+
+
+            }    
+        }
+
+        // Process the collected nodes
+        for (auto& hdPair : nodes) {
+            vector<int> col;
+            for (auto& levelPair : hdPair.second) {
+                col.insert(col.end(), levelPair.second.begin(), levelPair.second.end());
+            }
+            ans.push_back(col);
+        }
+
+        return ans;
+    }
+};
