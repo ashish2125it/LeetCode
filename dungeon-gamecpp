@@ -1,0 +1,35 @@
+class Solution {
+public:
+int solve(int row,int col,vector<vector<int>>&grid,int n,int m,vector<vector<int>>&dp)
+{
+    if(row==n-1 && col==m-1) return max(1,1-grid[row][col]);
+
+    if(row>=n || col>=m) return INT_MAX;
+
+    if(dp[row][col]!=-1) return dp[row][col]; 
+
+    int down = solve(row+1,col,grid,n,m,dp);
+
+    int right = solve(row,col+1,grid,n,m,dp);
+
+    int min_health = min(down,right);
+
+    int health = min_health- grid[row][col]; 
+    return dp[row][col] =  max(1,health) ;  
+
+}
+    int calculateMinimumHP(vector<vector<int>>& d) {
+        // Given a m*n grid 
+        // (0,0) -> (n-1,m-1) 
+        // any particuler time if health is 0 prince is going to die 
+        // every have he has 2 options  {right, down } 
+       
+       int n = d.size(), m = d[0].size();
+       vector<vector<int>>dp(n+1,vector<int>(m+1,-1));
+       return solve(0,0,d,n,m,dp);
+
+       
+
+
+    }
+};
