@@ -1,0 +1,29 @@
+class Solution {
+public:
+    int solve(int i,int j,vector<int>&freq,int k,vector<vector<int>>&dp)
+    {
+        
+        if(i==j || freq[j]-freq[i]<=k)
+        return 0;
+
+        if(dp[i][j]!=-1) return dp[i][j];
+
+
+        // opt1 
+        int opt1 = freq[i] + solve(i+1,j,freq,k,dp);
+        int opt2 =  ( (freq[j]-freq[i])-k) + solve(i,j-1,freq,k,dp);
+
+        return dp[i][j] =  min(opt1,opt2);
+    }
+    int minimumDeletions(string word, int k) {
+    int n = word.size();
+    vector<int>freq(26,0);
+    for(int i=0;i<n;i++)
+    freq[word[i]-'a']++;
+
+    sort(freq.begin(),freq.end());
+    vector<vector<int>>dp(26,vector<int>(26,-1));
+    return solve(0,25,freq,k,dp);
+
+    }
+};
