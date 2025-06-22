@@ -1,0 +1,65 @@
+class Solution {
+public:
+    bool valid(int row, int col, int n, int m, vector<vector<int>>& vis, vector<vector<int>>& grid) {
+        return row >= 0 && row < n && col >= 0 && col < m && vis[row][col] == 0 && grid[row][col] == 0;
+    }
+
+    bool solve(vector<vector<int>>& grid, int n, int m) {
+        queue<pair<int, int>> q;
+        vector<vector<int>> vis(n, vector<int>(m, 0));
+
+        int nrow[4] = {-1, 0, 1, 0};
+        int ncol[4] = {0, 1, 0, -1};
+
+        for (int i = 0; i < m; i++) {
+            if (grid[0][i] == 0) {
+                q.push({0, i});
+                vis[0][i] = 1;
+            }
+        }
+
+        while (!q.empty()) {
+            auto [r, c] = q.front(); q.pop();
+            if (r == n - 1) return true;
+
+            for (int k = 0; k < 4; k++) {
+                int next_row = r + nrow[k];
+                int next_col = c + ncol[k];
+
+                if (valid(next_row, next_col, n, m, vis, grid)) {
+                    vis[next_row][next_col] = 1;
+                    q.push({next_row, next_col});
+                }
+            }
+        }
+
+        return false;
+    }
+
+    int latestDayToCross(int row, int col, vector<vector<int>>& cells) {
+        int n = cells.size();
+        int low = 0, high = n - 1;
+        int ans = 0;
+
+        while (low <= high) {
+            int mid = (low + high) / 2;
+            vector<vector<int>> grid(row, vector<int>(col, 0));
+
+            // Fix: adjust for 1-based to 0-based
+            for (int i = 0; i <= mid; i++) {
+                int r = cells[i][0] - 1;
+                int c = cells[i][1] - 1;
+                grid[r][c] = 1;
+            }
+
+            if (solve(grid, row, col)) {
+                ans = mid + 1; // we want the day index (1-based)
+                low = mid + 1;
+            } else {
+                high = mid - 1;
+            }
+        }
+
+        return ans;
+    }
+};
