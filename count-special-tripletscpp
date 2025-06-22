@@ -1,0 +1,30 @@
+#define ll long long
+class Solution {
+public:
+    int specialTriplets(vector<int>& nums) {
+    int n = nums.size();
+    unordered_map<ll,ll>tot,mp;
+    for(auto it:nums) tot[it]++;
+
+    int ans=0;
+    int mod= (1e9+7);
+    for(int i=0;i<n;i++)
+    {
+        int left = 2*nums[i];
+        tot[nums[i]]--;
+        if(tot[nums[i]]==0)
+        tot.erase(nums[i]);
+
+        int left_ = mp[left];
+        int right = tot[2*nums[i]];
+       ans = (ans + 1LL * left_ * right % mod) % mod;
+
+        ans = ans%mod;
+
+        mp[nums[i]]++;
+    }
+        // 2x  x  2x
+
+        return ans;
+    }
+};
