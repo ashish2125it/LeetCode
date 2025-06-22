@@ -1,0 +1,32 @@
+class Solution {
+public:
+    double solve(int i, int j, int n, int k,vector<vector<vector<double>>>&dp) {
+       
+        if (i < 0 || j < 0 || i >= n || j >= n)
+            return 0.0;
+
+        
+        if (k == 0)
+            return 1.0;
+
+        if(dp[i][j][k]!=-1.0) return dp[i][j][k]; 
+
+        // All 8 possible moves of knight
+        vector<int> nrow = {-2,-2,-1,1,2,2,1,-1};
+        vector<int> ncol = {-1,1,2,2,1,-1,-2,-2};
+
+        double ans = 0.0;
+        for (int x = 0; x < 8; x++) {
+            int next_row = i + nrow[x];
+            int next_col = j + ncol[x];
+            ans += 0.125 * solve(next_row, next_col, n, k - 1,dp); 
+        }
+
+        return dp[i][j][k] =   ans;
+    }
+
+    double knightProbability(int n, int k, int row, int column) {
+        vector<vector<vector<double>>>dp(n+3,vector<vector<double>>(n+3,vector<double>(k+1,-1.0)));
+        return solve(row, column, n, k,dp);
+    }
+};
