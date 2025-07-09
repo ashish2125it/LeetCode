@@ -1,0 +1,39 @@
+class Solution {
+public:
+void solve(int i,vector<int>&c , int n,vector<int>& temp,vector<vector<int>>&ans,int sum,int target)
+{
+   
+   if(i>=n)
+   {
+        if(sum==target)
+        {
+            ans.push_back(temp);
+        }
+        return ;
+
+   }
+
+
+   // pick 
+   if(sum + c[i]<=target)
+   {
+   temp.push_back(c[i]); 
+   solve(i,c,n,temp,ans,sum+c[i],target);
+   temp.pop_back();
+   }
+
+  
+   solve(i+1,c,n,temp,ans,sum,target);  
+
+}
+    vector<vector<int>> combinationSum(vector<int>& c, int t) {
+    
+    int n = c.size();
+    vector<vector<int>>ans;
+    vector<int>temp ;
+    solve(0,c,n,temp,ans,0,t);
+    return ans;
+
+
+    }
+};
