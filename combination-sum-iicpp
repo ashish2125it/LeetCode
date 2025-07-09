@@ -1,0 +1,47 @@
+class Solution {
+public:
+
+void solve(int i,int n,vector<int>&c,vector<int>&temp,vector<vector<int>>&ans,int sum,int target)
+{
+
+    if(i>=n)
+    {
+        if(sum==target)
+        {
+            ans.push_back(temp);
+        }
+        return ;
+    }
+
+    // pick 
+  
+    if(sum + c[i]<=target)
+    {
+         temp.push_back(c[i]);
+         solve(i+1,n,c,temp,ans,sum + c[i],target);
+         temp.pop_back();
+    }
+
+    // not pick 
+    // [2,2,2,2,5]
+    //        i i+1
+
+     while(i+1<n && c[i]==c[i+1]) 
+     i++;
+     
+     solve(i+1,n,c,temp,ans,sum,target);
+
+}
+    vector<vector<int>> combinationSum2(vector<int>& c, int target) {
+
+    int n = c.size();
+    sort(c.begin(),c.end());
+    vector<vector<int>>ans;
+    vector<int>temp;
+    solve(0,n,c,temp,ans,0,target);
+
+    return ans;
+
+
+    }
+};
