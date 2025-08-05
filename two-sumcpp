@@ -1,0 +1,29 @@
+class Solution {
+public:
+    vector<int> twoSum(vector<int>& nums, int target) {
+    int n = nums.size();
+    unordered_map<int,int>mp;
+
+    vector<int>ans;
+
+
+    // -2 2 7 11 15  targ = 9
+    //    1 2
+    for(int i=0;i<n;i++)
+    {
+        int curr_element = nums[i];
+        int find_element = target - curr_element ;
+
+        if(mp.find(find_element)!=mp.end()) 
+        {
+            ans.push_back(mp[find_element]);
+            ans.push_back(i);
+            return ans;
+        }
+
+        mp[curr_element] = i;
+    }
+
+    return ans;
+    }
+};
