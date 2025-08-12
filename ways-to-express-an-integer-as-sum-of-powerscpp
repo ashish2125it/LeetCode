@@ -1,0 +1,45 @@
+#define ll long long int
+class Solution {
+public:
+
+    ll solve(int n,int x,ll sum,ll number,vector<vector<ll>>&dp)
+    {
+        if(sum==n) return 1;
+        if(dp[sum][number]!=-1) return dp[sum][number];
+        
+        ll mod = (1e9+7);
+        ll ans=0;
+        for(int j=number;j<=n;j++)
+        {
+            ll next_sum = sum + pow(j,x);
+            if(next_sum<=n)
+            ans = (ans%mod + solve(n,x,next_sum,j+1,dp)%mod )%mod;
+        }
+
+        return dp[sum][number] =  ans%mod;
+    }
+    int numberOfWays(int n, int x) {
+  //  vector<vector<ll>>dp(n+1,vector<ll>(n+1,-1));
+    vector<vector<ll>> dp(n+2, vector<ll>(n+1, 0));
+        dp[0][0] = 1;
+
+        ll mod = (1e9+7);
+        
+        // Calculate max number for given x that does not exceed n
+        int maxN = 1;
+        while (pow(maxN, x) <= n) maxN++;
+        maxN--;
+     
+        for (int i = 1; i <= maxN; ++i) {
+            ll power = pow(i, x);
+            for (int j = 0; j <= n; ++j) {
+                // Not using current
+                dp[i][j] = dp[i-1][j];
+                // Using current if possible
+                if (j >= power)
+                    dp[i][j] = (dp[i][j] + dp[i-1][j-power]) % mod;
+            }
+        }
+        return dp[maxN][n];
+    }
+};
