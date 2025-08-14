@@ -1,0 +1,37 @@
+class Solution {
+public:
+    vector<int> intersect(vector<int>& nums1, vector<int>& nums2) {
+    vector<int>ans;
+    int n1 = nums1.size() , n2 = nums2.size();
+
+    unordered_map<int,int>mp1, mp2;
+
+    for(int i=0;i<n1;i++)
+    mp1[nums1[i]]++;
+
+    for(int i=0;i<n2;i++)
+    mp2[nums2[i]]++;
+
+
+    for(auto it:mp1)
+    {
+        int key = it.first;
+        int freq1 = it.second ;
+
+        if(mp2.find(key)!=mp2.end())
+        {
+            int  freq2 = mp2[key];
+            int min_freq = min(freq1, freq2);
+
+            for(int j=0;j<min_freq;j++)
+            ans.push_back(key);
+
+        }
+    }
+
+    return ans;
+
+
+        
+    }
+};
