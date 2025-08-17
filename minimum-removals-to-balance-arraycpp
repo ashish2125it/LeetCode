@@ -1,0 +1,30 @@
+class Solution {
+public:
+    
+    int solve(int i,int j,int n,vector<int>&nums,vector<vector<int>>&dp,int k)
+    {
+     if (nums[j] <= (1LL * k * nums[i]))
+    return (i + (n - j - 1));
+
+        if(i>=j) 
+        return (i) + (n-j-1);
+        if(dp[i][j]!=-1) return dp[i][j];
+
+
+        int opt1 = solve(i+1,j,n,nums,dp,k);
+        int opt2 = solve(i,j-1,n,nums,dp,k);
+        return dp[i][j] = min(opt1,opt2);
+
+
+    }
+
+    int minRemoval(vector<int>& nums, int k) {
+    int n = nums.size();
+    sort(nums.begin(),nums.end());
+    vector<vector<int>>dp(n+1,vector<int>(n+1,-1));
+    return solve(0,n-1,n,nums,dp,k);
+
+
+
+    }
+};
