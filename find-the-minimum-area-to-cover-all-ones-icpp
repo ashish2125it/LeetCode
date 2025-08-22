@@ -1,0 +1,46 @@
+class Solution {
+public:
+    int minimumArea(vector<vector<int>>& grid) {
+    int n = grid.size(),m = grid[0].size();
+    int row_start =-1,row_end=-1,col_start=-1,col_end = -1;
+    int prev= -1;
+    for(int i=0;i<n;i++)
+    {
+        for(int j=0;j<m;j++)
+        {
+            if(grid[i][j]==1)
+            {
+               if(prev==-1)
+               {
+                 row_start = i;
+                  row_end =i;
+                 prev = 0;
+               }
+               else
+               row_end =i;
+            }
+        }
+    }
+
+    prev = -1;
+     for(int i=0;i<m;i++)
+    {
+        for(int j=0;j<n;j++)
+        {
+            if(grid[j][i]==1)
+            {
+               if(prev==-1)
+               {
+                 col_start = i;
+                 col_end =i;
+                 prev = 0;
+               }
+               else
+               col_end =i;
+            }
+        }
+    }
+
+    return (col_end-col_start+1)*(row_end-row_start+1);
+    }
+};
