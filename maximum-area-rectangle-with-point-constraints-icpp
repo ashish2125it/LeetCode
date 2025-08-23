@@ -1,0 +1,47 @@
+class Solution {
+public:
+    int maxRectangleArea(vector<vector<int>>& points) {
+        int n = points.size();
+        set<pair<int,int>> st;
+        for (auto &p : points) {
+            st.insert({p[0], p[1]});
+        }
+        
+        int ans = -1;
+        
+        for (int i = 0; i < n; i++) {
+            for (int j = i + 1; j < n; j++) {
+                int x1 = points[i][0], y1 = points[i][1];
+                int x2 = points[j][0], y2 = points[j][1];
+                
+                if (x1 == x2 || y1 == y2) continue; // not a rectangle
+                
+                // check other two corners
+                if (st.count({x1, y2}) && st.count({x2, y1})) {
+                    
+                    bool valid = true;
+                    int minx = min(x1, x2), maxx = max(x1, x2);
+                    int miny = min(y1, y2), maxy = max(y1, y2);
+                    
+                    // check no other point inside or on border
+                    for (auto &p : points) {
+                        int x = p[0], y = p[1];
+                        if ((x > minx && x < maxx && y > miny && y < maxy) || // inside
+                            ((x == minx || x == maxx) && (y > miny && y < maxy)) || // vertical border
+                            ((y == miny || y == maxy) && (x > minx && x < maxx)))   // horizontal border
+                        {
+                            valid = false;
+                            break;
+                        }
+                    }
+                    
+                    if (valid) {
+                        ans = max(ans, (maxx - minx) * (maxy - miny));
+                    }
+                }
+            }
+        }
+        
+        return ans;
+    }
+};
